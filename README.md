@@ -11,10 +11,10 @@ The basic idea is as follows:
   SSE/ARM SIMD instructions, and once with AVX instructions (if the platform supports them).
 - Make sure that any SIMD-dependent definitions defined in that static library
   are contained entirely within it (i.e. no "leaking" definitions in the header file).
-- Inside the library there will be some struct that contains out neural network.
+- Inside the library there will be some struct that contains our neural network.
   We need to have some way of choosing between some version of the struct that uses
   SSE/ARM instructions, and a version that uses AVX instructions. In this example,
-  we use a template struct.
+  we use a template struct, but you could just use two separately-defined structs.
 - In the plugin code, create an instance for each version of the neural network struct.
   In this example, we create two separate instances, but insome cases it might make sense
   to compress them using a `std::variant` or similar.
