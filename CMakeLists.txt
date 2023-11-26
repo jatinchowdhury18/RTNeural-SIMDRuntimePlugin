@@ -11,25 +11,8 @@ set(PRODUCT_NAME "NeuralSIMDRuntimePlugin")
 
 add_subdirectory(modules)
 
-# juce_set_vst2_sdk_path(C:/SDKs/VST_SDK/VST2_SDK)
 # set default plugin formats to build
-if(IOS)
-    set(JUCE_FORMATS Standalone AUv3)
-else()
-    set(JUCE_FORMATS AU VST3 Standalone)
-endif()
-
-# Build LV2 only on Linux
-if(UNIX AND NOT APPLE)
-    message(STATUS "Building LV2 plugin format")
-    list(APPEND JUCE_FORMATS LV2)
-endif()
-
-# Build VST2 is SDK set
-if(TARGET juce_vst2_sdk)
-    message(STATUS "Building VST2 plugin format")
-    list(APPEND JUCE_FORMATS VST)
-endif()
+set(JUCE_FORMATS AU VST3 Standalone)
 
 juce_add_plugin(NeuralSIMDRuntimePlugin
     COMPANY_NAME "${COMPANY_NAME}"
@@ -37,8 +20,6 @@ juce_add_plugin(NeuralSIMDRuntimePlugin
     PLUGIN_CODE RTN3
     FORMATS ${JUCE_FORMATS}
     PRODUCT_NAME "${PRODUCT_NAME}"
-    
-    LV2URI https://github.com/Chowdhury-DSP/NeuralSIMDRuntimePlugin
     
     MICROPHONE_PERMISSION_ENABLED TRUE
 )
@@ -62,11 +43,3 @@ target_compile_definitions(NeuralSIMDRuntimePlugin PUBLIC
 )
 
 target_link_libraries(NeuralSIMDRuntimePlugin PRIVATE juce_plugin_modules)
-
-# we need these flags for notarization on MacOS
-option(MACOS_RELEASE "Set build flags for MacOS Release" OFF)
-if(MACOS_RELEASE)
-    message(STATUS "Setting MacOS release flags...")
-    set_target_properties(NeuralSIMDRuntimePlugin_Standalone PROPERTIES
-        XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME YES)
-endif()

@@ -6,6 +6,9 @@ message(STATUS "VERSION for JUCE: ${juce_version}")
 subproject_version(chowdsp_utils chowdsp_version)
 message(STATUS "VERSION for chowdsp: ${chowdsp_version}")
 
+set(RTNEURAL_XSIMD ON CACHE BOOL "Use RTNeural with XSIMD backend" FORCE)
+add_subdirectory(RTNeural)
+
 include(cmake/WarningFlags.cmake)
 add_library(juce_plugin_modules STATIC)
 target_link_libraries(juce_plugin_modules
@@ -16,6 +19,7 @@ target_link_libraries(juce_plugin_modules
         chowdsp::chowdsp_plugin_base
         chowdsp::chowdsp_plugin_state
         chowdsp::chowdsp_gui
+        chowdsp::chowdsp_dsp_utils
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
